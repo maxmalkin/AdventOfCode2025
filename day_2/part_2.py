@@ -35,7 +35,7 @@ def solve(input: str) -> int:
 
 
 if __name__ == "__main__":
-    with open("day_2.txt", "r") as f:
+    with open("inputs/day_2.txt", "r") as f:
         input = f.read()
         result = solve(input)
         print(result)
