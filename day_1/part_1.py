@@ -20,5 +20,7 @@ def solve(input: str) -> int:
 
 
 if __name__ == "__main__":
-    result = solve(" ")
-    print(result)
+    with open("day_1.txt", "r") as f:
+        input = f.read()
+        result = solve(input)
+        print(result)
