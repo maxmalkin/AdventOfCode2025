@@ -4,9 +4,9 @@ def solve(input: str) -> int:
     position = 50
     zero_count = 0
 
-    for rotation in rotations:
-        direction = rotation[0]
-        distance = int(rotation[1:])
+    for r in rotations:
+        direction = r[0]
+        distance = int(r[1:])
 
         if direction == "L":
             position = (position - distance) % 100
