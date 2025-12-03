@@ -3,12 +3,12 @@ def solve(input: str) -> int:
 
     sum = 0
 
-    for bank in banks:
+    for b in banks:
         max_joltage = 0
 
-        for i in range(len(bank)):
-            for j in range(i + 1, len(bank)):
-                joltage = int(bank[i] + bank[j])
+        for i in range(len(b)):
+            for j in range(i + 1, len(b)):
+                joltage = int(b[i] + b[j])
                 max_joltage = max(max_joltage, joltage)
 
         sum += max_joltage
