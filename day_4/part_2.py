@@ -39,7 +39,7 @@ def solve(input: str) -> int:
 
     grid = [list(line) for line in input.strip().split("\n")]
 
-    total_removed = 0
+    removed = 0
 
     while True:
         accessible = find_accessible_rolls(grid)
@@ -50,9 +50,9 @@ def solve(input: str) -> int:
         for row, col in accessible:
             grid[row][col] = "."
 
-        total_removed += len(accessible)
+        removed += len(accessible)
 
-    return total_removed
+    return removed
 
 
 if __name__ == "__main__":
