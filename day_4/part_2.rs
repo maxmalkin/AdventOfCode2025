@@ -5,9 +5,14 @@ fn count_adjacent_rolls(grid: &Vec<Vec<char>>, row: usize, col: usize) -> i32 {
     let cols = if rows > 0 { grid[0].len() } else { 0 };
 
     let directions = [
-        (-1, -1), (-1, 0), (-1, 1),
-        (0, -1),           (0, 1),
-        (1, -1),  (1, 0),  (1, 1),
+        (-1, -1),
+        (-1, 0),
+        (-1, 1),
+        (0, -1),
+        (0, 1),
+        (1, -1),
+        (1, 0),
+        (1, 1),
     ];
 
     let mut adjacent_rolls = 0;

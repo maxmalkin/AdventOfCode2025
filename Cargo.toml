@@ -1,0 +1,44 @@
+[package]
+name = "advent_of_code_2025"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "day_1_part_1"
+path = "day_1/part_1.rs"
+
+[[bin]]
+name = "day_1_part_2"
+path = "day_1/part_2.rs"
+
+[[bin]]
+name = "day_2_part_1"
+path = "day_2/part_1.rs"
+
+[[bin]]
+name = "day_2_part_2"
+path = "day_2/part_2.rs"
+
+[[bin]]
+name = "day_3_part_1"
+path = "day_3/part_1.rs"
+
+[[bin]]
+name = "day_3_part_2"
+path = "day_3/part_2.rs"
+
+[[bin]]
+name = "day_4_part_1"
+path = "day_4/part_1.rs"
+
+[[bin]]
+name = "day_4_part_2"
+path = "day_4/part_2.rs"
+
+[[bin]]
+name = "day_5_part_1"
+path = "day_5/part_1.rs"
+
+[[bin]]
+name = "day_5_part_2"
+path = "day_5/part_2.rs"

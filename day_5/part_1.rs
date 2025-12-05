@@ -8,8 +8,8 @@ fn solve(input: &str) -> i32 {
         let line = line.trim();
         if !line.is_empty() {
             let parts: Vec<&str> = line.split('-').collect();
-            let start: i32 = parts[0].parse().unwrap();
-            let end: i32 = parts[1].parse().unwrap();
+            let start: i64 = parts[0].parse().unwrap();
+            let end: i64 = parts[1].parse().unwrap();
             ranges.push((start, end));
         }
     }
@@ -18,7 +18,7 @@ fn solve(input: &str) -> i32 {
     for line in sections[1].trim().lines() {
         let line = line.trim();
         if !line.is_empty() && line.chars().all(|c| c.is_numeric()) {
-            ingredient_ids.push(line.parse::<i32>().unwrap());
+            ingredient_ids.push(line.parse::<i64>().unwrap());
         }
     }
 

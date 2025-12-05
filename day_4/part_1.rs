@@ -6,9 +6,14 @@ fn solve(input: &str) -> i32 {
     let cols = if rows > 0 { grid[0].len() } else { 0 };
 
     let directions = [
-        (-1, -1), (-1, 0), (-1, 1),
-        (0, -1),           (0, 1),
-        (1, -1),  (1, 0),  (1, 1),
+        (-1, -1),
+        (-1, 0),
+        (-1, 1),
+        (0, -1),
+        (0, 1),
+        (1, -1),
+        (1, 0),
+        (1, 1),
     ];
 
     let mut accessible_count = 0;
@@ -23,7 +28,11 @@ fn solve(input: &str) -> i32 {
                     let new_row = row as i32 + dr;
                     let new_col = col as i32 + dc;
 
-                    if new_row >= 0 && new_row < rows as i32 && new_col >= 0 && new_col < cols as i32 {
+                    if new_row >= 0
+                        && new_row < rows as i32
+                        && new_col >= 0
+                        && new_col < cols as i32
+                    {
                         let new_row_chars: Vec<char> = grid[new_row as usize].chars().collect();
                         if new_row_chars[new_col as usize] == '@' {
                             adjacent_rolls += 1;

@@ -1,6 +1,6 @@
 use std::fs;
 
-fn solve(input: &str) -> i32 {
+fn solve(input: &str) -> i64 {
     let sections: Vec<&str> = input.trim().split("\n\n").collect();
 
     let mut ranges = Vec::new();
@@ -8,15 +8,15 @@ fn solve(input: &str) -> i32 {
         let line = line.trim();
         if !line.is_empty() {
             let parts: Vec<&str> = line.split('-').collect();
-            let start: i32 = parts[0].parse().unwrap();
-            let end: i32 = parts[1].parse().unwrap();
+            let start: i64 = parts[0].parse().unwrap();
+            let end: i64 = parts[1].parse().unwrap();
             ranges.push((start, end));
         }
     }
 
     ranges.sort();
 
-    let mut merged = Vec::new();
+    let mut merged: Vec<(i64, i64)> = Vec::new();
     for (start, end) in ranges {
         if !merged.is_empty() && start <= merged.last().unwrap().1 + 1 {
             let last_idx = merged.len() - 1;
