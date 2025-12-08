@@ -1,6 +1,6 @@
 use std::fs;
 
-fn is_invalid_id(n: i32) -> bool {
+fn is_invalid_id(n: i64) -> bool {
     let s = n.to_string();
     let length = s.len();
 
@@ -16,8 +16,8 @@ fn is_invalid_id(n: i32) -> bool {
     &s[..mid] == &s[mid..]
 }
 
-fn solve(input: &str) -> i32 {
-    let ranges: Vec<(i32, i32)> = input
+fn solve(input: &str) -> i64 {
+    let ranges: Vec<(i64, i64)> = input
         .trim()
         .split(',')
         .map(|range_str| range_str.trim())

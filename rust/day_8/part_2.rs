@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 use std::fs;
 
-fn solve(input: &str) -> i32 {
+fn solve(input: &str) -> i64 {
     let lines: Vec<&str> = input
         .trim()
         .split('\n')
@@ -22,7 +22,7 @@ fn solve(input: &str) -> i32 {
         for j in (i + 1)..n {
             let (x1, y1, z1) = boxes[i];
             let (x2, y2, z2) = boxes[j];
-            let dist = (((x2 - x1).pow(2) + (y2 - y1).pow(2) + (z2 - z1).pow(2)) as f64).sqrt();
+            let dist = ((((x2 - x1) as i64).pow(2) + ((y2 - y1) as i64).pow(2) + ((z2 - z1) as i64).pow(2)) as f64).sqrt();
             distances.push((dist, i, j));
         }
     }
@@ -52,9 +52,9 @@ fn solve(input: &str) -> i32 {
         if union(&mut parent, a, b) {
             let roots: HashSet<usize> = (0..n).map(|i| find(&mut parent, i)).collect();
             if roots.len() == 1 {
-                let (x1, y1, z1) = boxes[a];
-                let (x2, y2, z2) = boxes[b];
-                return x1 * x2;
+                let (x1, _, _) = boxes[a];
+                let (x2, _, _) = boxes[b];
+                return (x1 as i64) * (x2 as i64);
             }
         }
     }
@@ -63,7 +63,7 @@ fn solve(input: &str) -> i32 {
 }
 
 fn main() {
-    let input = fs::read_to_string("inputs/day_8.txt").unwrap();
+    let input = fs::read_to_string("../inputs/day_8.txt").unwrap();
     let result = solve(&input);
     println!("{}", result);
 }

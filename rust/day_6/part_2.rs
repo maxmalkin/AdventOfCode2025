@@ -1,6 +1,6 @@
 use std::fs;
 
-fn solve(input: &str) -> i32 {
+fn solve(input: &str) -> i64 {
     let lines: Vec<&str> = input.trim().split('\n').collect();
 
     let operations_line = lines[lines.len() - 1];
@@ -88,17 +88,17 @@ fn solve(input: &str) -> i32 {
         }
     }
 
-    let mut total = 0;
+    let mut total: i64 = 0;
 
     for (numbers, operation) in problems {
-        let result = if operation == '*' {
-            let mut result = 1;
+        let result: i64 = if operation == '*' {
+            let mut result: i64 = 1;
             for num in numbers {
-                result *= num;
+                result *= num as i64;
             }
             result
         } else {
-            numbers.iter().sum()
+            numbers.iter().map(|&n| n as i64).sum()
         };
 
         total += result;
@@ -108,7 +108,7 @@ fn solve(input: &str) -> i32 {
 }
 
 fn main() {
-    let input = fs::read_to_string("inputs/day_6.txt").expect("Failed to read input file");
+    let input = fs::read_to_string("../inputs/day_6.txt").expect("Failed to read input file");
     let result = solve(&input);
     println!("{}", result);
 }

@@ -45,7 +45,7 @@ fn solve(input: &str) -> i32 {
 }
 
 fn main() {
-    let input = fs::read_to_string("inputs/day_7.txt").expect("Failed to read input file");
+    let input = fs::read_to_string("../inputs/day_7.txt").expect("Failed to read input file");
     let result = solve(&input);
     println!("{}", result);
 }
