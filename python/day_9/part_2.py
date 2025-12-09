@@ -19,13 +19,10 @@ def solve(input: str) -> int:
     width = len(all_x)
     height = len(all_y)
 
-    # Create compressed tile list and set
     compressed_tiles = [(x_to_compressed[x], y_to_compressed[y]) for x, y in tiles]
-    compressed_red_set = set(compressed_tiles)
 
     grid = [[False] * width for _ in range(height)]
 
-    # Mark red tiles
     for cx, cy in compressed_tiles:
         grid[cy][cx] = True
 
@@ -39,7 +36,7 @@ def solve(input: str) -> int:
         if cx1 == cx2:
             for cy in range(min(cy1, cy2), max(cy1, cy2) + 1):
                 grid[cy][cx1] = True
-        elif cy1 == cy2:  # horizontal edge
+        elif cy1 == cy2:
             for cx in range(min(cx1, cx2), max(cx1, cx2) + 1):
                 grid[cy1][cx] = True
 
