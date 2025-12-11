@@ -1,6 +1,6 @@
 use std::fs;
 
-fn solve_machine(buttons: &Vec<Vec<usize>>, joltages: &Vec<i32>) -> i32 {
+fn solve_machine(buttons: &Vec<Vec<usize>>, joltages: &Vec<i64>) -> i64 {
     let n_buttons = buttons.len();
     let n_counters = joltages.len();
 
@@ -8,17 +8,17 @@ fn solve_machine(buttons: &Vec<Vec<usize>>, joltages: &Vec<i32>) -> i32 {
         return -1;
     }
 
-    let mut min_presses = i32::MAX;
+    let mut min_presses = i64::MAX;
 
     fn backtrack(
         buttons: &Vec<Vec<usize>>,
-        joltages: &Vec<i32>,
-        current_sums: &mut Vec<i32>,
-        button_counts: &mut Vec<i32>,
-        total_presses: i32,
+        joltages: &Vec<i64>,
+        current_sums: &mut Vec<i64>,
+        button_counts: &mut Vec<i64>,
+        total_presses: i64,
         button_idx: usize,
-        min_presses: &mut i32,
-        iterations: &mut i32,
+        min_presses: &mut i64,
+        iterations: &mut i64,
     ) -> bool {
         *iterations += 1;
         if *iterations > 10000 {
@@ -101,14 +101,14 @@ fn solve_machine(buttons: &Vec<Vec<usize>>, joltages: &Vec<i32>) -> i32 {
         &mut iterations,
     );
 
-    if min_presses == i32::MAX {
+    if min_presses == i64::MAX {
         -1
     } else {
         min_presses
     }
 }
 
-fn solve(input: &str) -> i32 {
+fn solve(input: &str) -> i64 {
     let lines: Vec<&str> = input
         .trim()
         .split('\n')
@@ -148,7 +148,7 @@ fn solve(input: &str) -> i32 {
         }
 
         let joltage_str = &line[joltage_start.unwrap() + 1..joltage_end.unwrap()];
-        let joltages: Vec<i32> = joltage_str
+        let joltages: Vec<i64> = joltage_str
             .split(',')
             .filter_map(|s| s.trim().parse().ok())
             .collect();
