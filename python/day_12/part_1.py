@@ -1,39 +1,37 @@
 def solve(input: str) -> int:
-    lines = input.strip().split("\n")
+    lines = [line for line in input.strip().split("\n")]
 
-    region_start = 0
-    for i, line in enumerate(lines):
-        if "x" in line and ":" in line:
-            region_start = i
-            break
-
-    shapes = []
-    i = 0
-    while i < region_start:
-        line = lines[i]
-        if ":" in line:
-            shape = []
-            i += 1
-            while i < region_start and ":" not in lines[i]:
-                if lines[i].strip():
-                    shape.append(lines[i])
-                i += 1
-            if shape:
-                shapes.append(shape)
-        else:
-            i += 1
-
+    shapes = {}
     regions = []
-    for i in range(region_start, len(lines)):
+
+    i = 0
+    while i < len(lines):
         line = lines[i].strip()
+
         if not line:
+            i += 1
             continue
-        parts = line.split(":")
-        size_parts = parts[0].strip().split("x")
-        width = int(size_parts[0])
-        height = int(size_parts[1])
-        counts = list(map(int, parts[1].strip().split()))
-        regions.append((width, height, counts))
+
+        if ":" in line and "x" not in line:
+            parts = line.split(":")
+            if parts[0].isdigit():
+                idx = int(parts[0])
+                shape_lines = []
+                i += 1
+                while i < len(lines) and lines[i].strip() and ":" not in lines[i]:
+                    shape_lines.append(lines[i])
+                    i += 1
+                shapes[idx] = shape_lines
+                continue
+
+        if "x" in line and ":" in line:
+            parts = line.split(":")
+            dims = parts[0].strip()
+            width, height = map(int, dims.split("x"))
+            counts = list(map(int, parts[1].strip().split()))
+            regions.append((width, height, counts))
+
+        i += 1
 
     def get_shape_cells(shape):
         cells = []
@@ -43,12 +41,18 @@ def solve(input: str) -> int:
                     cells.append((r, c))
         return cells
 
-    def normalize_cells(cells):
+    def normalize_shape(cells):
         if not cells:
             return []
         min_r = min(r for r, c in cells)
         min_c = min(c for r, c in cells)
-        return sorted([(r - min_r, c - min_c) for r, c in cells])
+        return tuple(sorted((r - min_r, c - min_c) for r, c in cells))
+
+    def rotate_90(cells):
+        return [(c, -r) for r, c in cells]
+
+    def flip_horizontal(cells):
+        return [(-r, c) for r, c in cells]
 
     def get_all_orientations(shape):
         cells = get_shape_cells(shape)
@@ -56,71 +60,67 @@ def solve(input: str) -> int:
 
         current = cells
         for _ in range(4):
-            orientations.add(tuple(normalize_cells(current)))
-            current = [(c, -r) for r, c in current]
+            orientations.add(normalize_shape(current))
+            current = rotate_90(current)
 
-        current = [(r, -c) for r, c in cells]
+        current = flip_horizontal(cells)
         for _ in range(4):
-            orientations.add(tuple(normalize_cells(current)))
-            current = [(c, -r) for r, c in current]
+            orientations.add(normalize_shape(current))
+            current = rotate_90(current)
 
-        return [list(o) for o in orientations]
+        return list(orientations)
 
-    def can_place(grid, cells, row, col):
-        height = len(grid)
-        width = len(grid[0])
-
-        for dr, dc in cells:
-            r, c = row + dr, col + dc
+    def can_place(grid, shape, start_r, start_c, width, height):
+        for dr, dc in shape:
+            r, c = start_r + dr, start_c + dc
             if r < 0 or r >= height or c < 0 or c >= width:
                 return False
             if grid[r][c]:
                 return False
         return True
 
-    def place(grid, cells, row, col, value):
-        for dr, dc in cells:
-            r, c = row + dr, col + dc
-            grid[r][c] = value
+    def place(grid, shape, start_r, start_c):
+        for dr, dc in shape:
+            r, c = start_r + dr, start_c + dc
+            grid[r][c] = True
 
-    def backtrack(grid, presents_to_place, all_orientations):
-        if not presents_to_place:
-            return True
+    def unplace(grid, shape, start_r, start_c):
+        for dr, dc in shape:
+            r, c = start_r + dr, start_c + dc
+            grid[r][c] = False
 
-        shape_idx = presents_to_place[0]
-        remaining = presents_to_place[1:]
-
-        height = len(grid)
-        width = len(grid[0])
-
-        for orientation in all_orientations[shape_idx]:
-            for r in range(height):
-                for c in range(width):
-                    if can_place(grid, orientation, r, c):
-                        place(grid, orientation, r, c, True)
-                        if backtrack(grid, remaining, all_orientations):
-                            return True
-                        place(grid, orientation, r, c, False)
-
-        return False
-
-    def can_fit_all(width, height, counts, shapes):
+    def solve_region(width, height, presents):
         grid = [[False] * width for _ in range(height)]
 
-        all_orientations = []
-        for shape in shapes:
-            all_orientations.append(get_all_orientations(shape))
+        def backtrack(idx):
+            if idx == len(presents):
+                return True
 
-        presents_to_place = []
-        for shape_idx, count in enumerate(counts):
-            for _ in range(count):
-                presents_to_place.append(shape_idx)
+            shape_variants = presents[idx]
 
-        return backtrack(grid, presents_to_place, all_orientations)
+            for variant in shape_variants:
+                for r in range(height):
+                    for c in range(width):
+                        if can_place(grid, variant, r, c, width, height):
+                            place(grid, variant, r, c)
+                            if backtrack(idx + 1):
+                                return True
+                            unplace(grid, variant, r, c)
+
+            return False
+
+        return backtrack(0)
 
     count = 0
     for width, height, counts in regions:
-        if can_fit_all(width, height, counts, shapes):
+        presents = []
+        for shape_idx, cnt in enumerate(counts):
+            if shape_idx in shapes:
+                orientations = get_all_orientations(shapes[shape_idx])
+                for _ in range(cnt):
+                    presents.append(orientations)
+
+        if solve_region(width, height, presents):
             count += 1
 
     return count
