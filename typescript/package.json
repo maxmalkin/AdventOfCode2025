@@ -5,5 +5,8 @@
 	"devDependencies": {
 		"@types/node": "latest",
 		"typescript": "latest"
+	},
+	"dependencies": {
+		"fs": "^0.0.1-security"
 	}
 }
