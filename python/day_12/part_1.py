@@ -36,7 +36,7 @@ def solve(input: str) -> int:
                         h = int(dims[1])
                         counts = [int(x) for x in parts[1].split()]
                         regions.append((w, h, counts))
-                    except ValueError:
+                    except Exception:
                         pass
 
         i += 1
