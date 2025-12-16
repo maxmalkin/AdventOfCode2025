@@ -10,7 +10,6 @@ def solve(input: str) -> int:
     i = 0
     while i < len(lines):
         line = lines[i].strip()
-
         if not line:
             i += 1
             continue
@@ -37,7 +36,7 @@ def solve(input: str) -> int:
                         h = int(dims[1])
                         counts = [int(x) for x in parts[1].split()]
                         regions.append((w, h, counts))
-                    except:
+                    except ValueError:
                         pass
 
         i += 1
